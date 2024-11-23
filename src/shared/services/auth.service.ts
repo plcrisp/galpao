@@ -19,6 +19,8 @@ export class AuthService {
 
   private token: string | null = null;
 
+  dummyUserPath = 'assets/images/dummyuser.jpg';
+
   // MODAIS
 
   showConfirmEmailModal: boolean = false;
@@ -55,50 +57,70 @@ export class AuthService {
     return !!token; // retorna true se o token existir
   }
 
-  cadastro(name: string, email: string, password: string, confirmPassword: string, photo: File) {
-    if (password !== confirmPassword) { // Verifica se as senhas coincidem
+  cadastro(name: string, email: string, password: string, confirmPassword: string, photo: File | null) {
+    if (password !== confirmPassword) {
       alert('As senhas não coincidem. Por favor, tente novamente.');
       return;
     }
 
-      this.fireauth.createUserWithEmailAndPassword(email, password)
-        .then(async userCredential => {
-          const user = userCredential.user;
-          if (user) {
-            // Salva dados do usuário no Firestore
-            const createdAt = firebase.firestore.FieldValue.serverTimestamp();
+    this.fireauth.createUserWithEmailAndPassword(email, password)
+      .then(async userCredential => {
+        const user = userCredential.user;
+        if (user) {
+          const createdAt = firebase.firestore.FieldValue.serverTimestamp();
+          let photoUrl = '';
 
-            const storage = getStorage(); // Obtém a instância do storage
-            const photoRef = ref(storage, `users/${user.uid}/profile.jpg`); // Referência ao arquivo de imagem
-
-            // Faz o upload da imagem
+          if (photo) {
+            // Faz o upload da foto fornecida pelo usuário
+            const storage = getStorage();
+            const photoRef = ref(storage, `users/${user.uid}/profile.jpg`);
             await uploadBytes(photoRef, photo);
-            const photoUrl = await getDownloadURL(photoRef); // Obtém a URL da imagem
-
-            await user.updateProfile({
-              displayName: name,
-              photoURL: photoUrl || null
-            });
-
-            const userData: UserInterface = {
-              name: name,
-              email: email,
-              createdAt: createdAt,
-              lastLogin: createdAt,
-              photoPath: photoUrl,
-            };
-
-            this.showSucessModal = true;
-
-            await this.salvarDadosUsuario(user.uid, userData);
-            user.sendEmailVerification();
+            photoUrl = await getDownloadURL(photoRef);
+          } else {
+            // Usa a imagem padrão como photoUrl
+            const storage = getStorage();
+            const dummyRef = ref(storage, `users/${user.uid}/dummyuser.jpg`);
+            const dummyBlob = await this.fetchDummyImageAsBlob(this.dummyUserPath);
+            await uploadBytes(dummyRef, dummyBlob);
+            photoUrl = await getDownloadURL(dummyRef);
           }
-        })
-        .catch(error => {
-          console.error('Erro ao criar usuário:', error);
-          alert('Erro ao criar conta: ' + error.message);
-        });
+
+          // Atualiza o perfil do usuário
+          await user.updateProfile({
+            displayName: name,
+            photoURL: photoUrl || null,
+          });
+
+          // Salva os dados no Firestore
+          const userData: UserInterface = {
+            name: name,
+            email: email,
+            createdAt: createdAt,
+            lastLogin: createdAt,
+            photoPath: photoUrl,
+          };
+
+          this.showSucessModal = true;
+
+          await this.salvarDadosUsuario(user.uid, userData);
+          user.sendEmailVerification();
+        }
+      })
+      .catch(error => {
+        console.error('Erro ao criar usuário:', error);
+        alert('Erro ao criar conta: ' + error.message);
+      });
   }
+
+  // Converte a imagem dummy local para Blob
+  private async fetchDummyImageAsBlob(path: string): Promise<Blob> {
+    const response = await fetch(path);
+    if (!response.ok) {
+      throw new Error(`Erro ao carregar a imagem dummy: ${response.statusText}`);
+    }
+    return response.blob();
+  }
+
   //método para redefinir a senha do usuario
   redefinirSenha(email: string) {
     this.fireauth.sendPasswordResetEmail(email).then(() => {

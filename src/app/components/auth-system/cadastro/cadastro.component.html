@@ -1,1 +1,59 @@
-<p>cadastro works!</p>
+<div *ngIf="auth.showSucessModal" class="modal-overlay">
+  <div class="modal-content">
+      <div class="modal-title">
+          <img src="../../../../assets/img/folha.png">
+          Cadastro Realizado com Sucesso!
+      </div>
+      <div class="modal-text">Verifique seu email para validar a conta.</div>
+      <div class="modal-buttons">
+          <button class="modal-cancel" (click)="auth.closeModal()">Fechar</button>
+      </div>
+  </div>
+</div>
+<div class="page">
+  <div class="body min-h-screen flex justify-center items-center">
+      <div class="caixa col-4 w-10/12 max-w-md">
+          <div class="card-shadow">
+              <div class="card-body p-6 rounded-2xl border-solid border-2 border-dark-blue">
+
+                  <div class="photo-upload">
+                    <input type="file" id="photo" accept="image/*" (change)="onFileChange($event)" hidden>
+                    <label for="photo" class="photo-upload-label">
+                        <img src="../../../../assets/icons/default.webp" alt="Foto do perfil" class="profile-photo">
+                        <span class="add-photo-text">Adicionar foto</span>
+                    </label>
+                  </div>
+
+                  <form>
+                      <div class="mb-4">
+                          <label for="name" class="form-label ml-1">Nome Completo</label>
+                          <input type="text" class="form-control placeholder-gray-300 w-full p-2 border rounded-lg mt-1" id="name" [(ngModel)]="name" name="name" placeholder="Nome">
+                      </div>
+                      <div class="mb-4">
+                          <label for="email" class="form-label ml-1">E-mail</label>
+                          <input type="email" class="form-control placeholder-gray-300 w-full p-2 border rounded-lg mt-1" id="email" [(ngModel)]="email" name="email" placeholder="E-mail">
+                      </div>
+                      <div class="mb-4">
+                          <label for="password" class="form-label ml-1">Senha</label>
+                          <input type="password" class="form-control placeholder-gray-300 w-full p-2 border rounded-lg mt-1" id="password" [(ngModel)]="password" name="password" placeholder="Senha">
+                      </div>
+                      <div class="mb-4">
+                          <label for="confirmPassword" class="form-label ml-1">Confirme a senha</label>
+                          <input type="password" class="form-control placeholder-gray-300 w-full p-2 border rounded-lg mt-1" id="confirmPassword" [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="Confirmar Senha">
+                      </div>
+                      <div class="mt-10">
+                          <button (click)="cadastro()" type="button" class="w-full bg-dark-green border text-white py-2 rounded-lg hover:shadow-lg transition-shadow duration-200">
+                              Cadastre-se
+                          </button>
+                      </div>
+                      <div class="flex justify-center items-center mt-6 mb-2">
+                          <div class="text-sm">Já possui uma conta?
+                              <a href="../login" class="text-dark-green hover:underline">Entrar</a>
+                          </div>
+                      </div>
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
