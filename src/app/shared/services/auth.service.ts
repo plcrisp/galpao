@@ -7,7 +7,7 @@ import { map, Observable, of, switchMap } from 'rxjs';
 import { take, first } from 'rxjs/operators';
 import { DocumentData, QuerySnapshot } from '@angular/fire/firestore';
 import * as jose from 'jose';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { UserInterface } from '../interfaces/user-interface';
 import firebase from 'firebase/compat/app';
 import { getDownloadURL, getStorage, uploadBytes, ref } from '@angular/fire/storage';

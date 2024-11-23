@@ -18,6 +18,8 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { HomeComponent } from './components/dashboard/home/home.component';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { HeaderComponent } from './shared/components/header/header.component';
+
 
 @NgModule({
   declarations: [
@@ -27,6 +29,7 @@ import { GoogleMapsModule } from '@angular/google-maps';
     CadastroComponent,
     RecuperarSenhaComponent,
     HomeComponent,
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,
