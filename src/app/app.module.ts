@@ -16,6 +16,8 @@ import { environment } from '../environments/environment';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { HomeComponent } from './components/dashboard/home/home.component';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,8 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
     InicialComponent,
     LoginComponent,
     CadastroComponent,
-    RecuperarSenhaComponent
+    RecuperarSenhaComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -32,7 +35,8 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFirestoreModule,
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    GoogleMapsModule
   ],
   providers: [
     provideFirebaseApp(() => initializeApp({"projectId":"gala-f4d76","appId":"1:126284747656:web:b317dd3890c6f4d341e03d","storageBucket":"gala-f4d76.firebasestorage.app","apiKey":"AIzaSyDiBkgPz32nCqiLrdJWCBSsnr2V2Mae0g4","authDomain":"gala-f4d76.firebaseapp.com","messagingSenderId":"126284747656","measurementId":"G-63N3CCYMFM"})),

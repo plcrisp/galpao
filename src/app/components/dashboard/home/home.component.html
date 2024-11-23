@@ -1,0 +1,11 @@
+<google-map height="450px"
+            width="100%"
+            [center]="center"
+            [zoom]="zoom"
+            (mapClick)="moveMap($event)"
+            (mapMousemove)="move($event)">
+            <map-marker [position]="markerPosition" [title]="'Meu Marcador'"></map-marker>
+</google-map>
+
+<div>Latitude: {{display?.lat}}</div>
+<div>Longitude: {{display?.lng}}</div>
