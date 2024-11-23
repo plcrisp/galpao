@@ -60,7 +60,7 @@ export class AuthService {
       alert('As senhas não coincidem. Por favor, tente novamente.');
       return;
     }
-    
+
       this.fireauth.createUserWithEmailAndPassword(email, password)
         .then(async userCredential => {
           const user = userCredential.user;
@@ -158,6 +158,76 @@ export class AuthService {
   //método para salvar dados do usuario no firestore
   salvarDadosUsuario(uid: string, user: UserInterface) {
     return this.firestore.collection(`users`).doc(uid).set(user);
+  }
+
+  //método para fazer login com o google
+  async googleSignIn() {
+    try {
+      // Inicia o processo OAuth
+      const provider = new GoogleAuthProvider();
+      const result: any = await this.fireauth.signInWithPopup(provider);
+
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const user = result.user;
+
+      if (user && user.emailVerified) {
+
+          // Procura o usuário no Firestore
+          const userSnapshot = await this.firestore.collection('users').ref
+            .where('email', '==', user.email)
+            .get();
+
+          if (!userSnapshot.empty) {
+            const userData = userSnapshot.docs[0].data() as { isActive: boolean };
+
+            // Verifica se o usuário está ativo
+            if (userData.isActive) {
+              // Atualiza o timestamp do último login
+              await this.firestore.collection('users').doc(user.uid).update({
+                lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+              });
+
+              const token = await this.generateJWTToken(userSnapshot.docs[0].data());
+              this.setJWTToken(token);
+              this.router.navigate(['/home']);
+            } else {
+              // Se o usuário está desativado
+              this.openBlockedModal();
+              await this.fireauth.signOut();
+            }
+          } else {
+            // Se o usuário não está cadastrado, cria um novo registro
+            await this.cadastrarNovoUsuarioComGoogle(user);
+            this.router.navigate(['/home']);
+          }
+      } else {
+        // Caso o e-mail não tenha sido verificado
+        this.openConfirmEmailModal();
+        await this.fireauth.signOut();
+      }
+    } catch (err) {
+      // Em caso de erro
+      this.openWrongModal();
+      await this.fireauth.signOut();
+    }
+  }
+
+  // Método para cadastrar o novo usuário no Firestore
+  async cadastrarNovoUsuarioComGoogle(user: any) {
+    const createdAt = firebase.firestore.FieldValue.serverTimestamp();
+
+    const userData: UserInterface = {
+      name: user.displayName || 'Usuário sem nome',
+      email: user.email,
+      createdAt: createdAt,
+      lastLogin: createdAt,
+      photoPath: user.photoURL || '',
+    };
+
+    await this.firestore.collection('users').doc(user.uid).set(userData);
+
+    const token = await this.generateJWTToken(userData);
+    this.setJWTToken(token);
   }
 
   //método para definir o token JWT no localStorage

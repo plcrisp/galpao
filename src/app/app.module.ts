@@ -10,6 +10,12 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { LoginComponent } from './components/auth-system/login/login.component';
 import { CadastroComponent } from './components/auth-system/cadastro/cadastro.component';
 import { RecuperarSenhaComponent } from './components/auth-system/recuperar-senha/recuperar-senha.component';
+import { FormsModule } from '@angular/forms';
+import { AngularFireModule } from '@angular/fire/compat';
+import { environment } from '../environments/environment';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 
 @NgModule({
   declarations: [
@@ -21,7 +27,12 @@ import { RecuperarSenhaComponent } from './components/auth-system/recuperar-senh
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
+    AngularFirestoreModule,
+    AngularFireStorageModule
   ],
   providers: [
     provideFirebaseApp(() => initializeApp({"projectId":"gala-f4d76","appId":"1:126284747656:web:b317dd3890c6f4d341e03d","storageBucket":"gala-f4d76.firebasestorage.app","apiKey":"AIzaSyDiBkgPz32nCqiLrdJWCBSsnr2V2Mae0g4","authDomain":"gala-f4d76.firebaseapp.com","messagingSenderId":"126284747656","measurementId":"G-63N3CCYMFM"})),
