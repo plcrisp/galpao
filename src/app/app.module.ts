@@ -19,6 +19,7 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { HomeComponent } from './components/dashboard/home/home.component';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { HeaderComponent } from './shared/components/header/header.component';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { HeaderComponent } from './shared/components/header/header.component';
     AngularFireAuthModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
-    GoogleMapsModule
+    GoogleMapsModule,
+    HttpClientModule
   ],
   providers: [
     provideFirebaseApp(() => initializeApp({"projectId":"gala-f4d76","appId":"1:126284747656:web:b317dd3890c6f4d341e03d","storageBucket":"gala-f4d76.firebasestorage.app","apiKey":"AIzaSyDiBkgPz32nCqiLrdJWCBSsnr2V2Mae0g4","authDomain":"gala-f4d76.firebaseapp.com","messagingSenderId":"126284747656","measurementId":"G-63N3CCYMFM"})),

@@ -113,12 +113,39 @@
 
   </div>
 
-  <div *ngFor="let galpao of galpoes" class="card">
-    <h3>{{ galpao.name }}</h3>
-    <p>Latitude: {{ galpao.latitude }}</p>
-    <p>Longitude: {{ galpao.longitude }}</p>
-    <p>Capacidade: {{ galpao.capacity }} m2</p>
-    <p>Data de criação: {{ galpao.createDate | date: 'dd/MM/yyyy' }}</p>
+
+  <div class="bg-green-100 min-h-screen p-6 pb-32">
+
+    <div class="search">
+      <input type="text" placeholder="Encontrar galpões" [(ngModel)]="searchQuery" (input)="filterGalpoes()" class="search-input">
+      <button type="button" class="search-button" (click)="filterGalpoes()">🔍</button>
+    </div>
+
+    <!-- Container com scroll vertical -->
+    <div class="caixa overflow-y-auto max-w-6xl mx-auto scrollbar-thin scrollbar-thumb-dark-green scrollbar-track-green-200 scrollbar-rounded-lg">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div
+          *ngFor="let galpao of filteredGalpoes"
+          class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center space-y-4"
+        >
+          <img src="../../../../assets/img/warehouse.png" alt="Warehouse" class="h-24 mb-4">
+          <h2 class="text-lg font-bold text-dark-gray">{{ galpao.name }}</h2>
+          <p class="text-sm text-gray-500">Registrado em: {{ galpao.createDate | date: 'fullDate' }}</p>
+          <ul class="text-sm text-dark-gray space-y-1">
+            <li><strong>Capacidade:</strong> {{ galpao.capacity }}</li>
+            <li class="text-sm text-dark-gray">
+              <strong>Localização:</strong>
+              <div class="text-center">{{ galpao.city }}, {{ galpao.state }}, {{ galpao.country }}</div>
+            </li>
+          </ul>
+          <button class="mt-auto bg-dark-green text-white px-4 py-2 rounded-lg hover:bg-green-800 transition">
+            Ver estoque
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
+
+
 
 </div>

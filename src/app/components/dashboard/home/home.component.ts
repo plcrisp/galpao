@@ -3,6 +3,7 @@ import { Warehouse } from '../../../shared/interfaces/warehouse-interface';
 import { Firestore } from '@angular/fire/firestore';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import firebase from 'firebase/compat/app';
+import { GeocodeService } from '../../../shared/services/geocode.service';
 
 @Component({
   selector: 'app-home',
@@ -24,8 +25,10 @@ export class HomeComponent {
     capacity: 0,
   };
   galpoes: Warehouse[] = [];
+  filteredGalpoes: Warehouse[] = [];
+  searchQuery: string = '';
 
-  constructor(private firestore: AngularFirestore){ }
+  constructor(private firestore: AngularFirestore, private geocoding: GeocodeService){ }
 
 
   ngOnInit(){
@@ -34,21 +37,38 @@ export class HomeComponent {
   }
 
   salvarGalpao() {
-    const warehouse: Warehouse = {
-      ...this.galpao,
-      createDate: firebase.firestore.Timestamp.now(),
-    } as Warehouse;
+    const { latitude, longitude } = this.galpao;
 
-    this.firestore
-      .collection<Warehouse>('warehouses')
-      .add(warehouse)
-      .then(() => {
-        console.log('Galpão registrado com sucesso!');
-        this.galpao = { name: '', latitude: 0, longitude: 0, capacity: 0 }; // Reseta o formulário
-      })
-      .catch((error) => {
-        console.error('Erro ao registrar o galpão:', error);
-      });
+    if (latitude !== undefined && longitude !== undefined) {
+      this.geocoding.reverseGeocode(latitude, longitude).subscribe(
+        (response) => {
+          const components = response.results[0].components;
+          const warehouse: Warehouse = {
+            ...this.galpao,
+            city: components.city || components.town || components.village,
+            state: components.state,
+            country: components.country,
+            createDate: firebase.firestore.Timestamp.now(),
+          } as Warehouse;
+
+          this.firestore
+            .collection<Warehouse>('warehouses')
+            .add(warehouse)
+            .then(() => {
+              console.log('Galpão registrado com sucesso!');
+              this.galpao = { name: '', latitude: 0, longitude: 0, capacity: 0 }; // Reseta o formulário
+            })
+            .catch((error) => {
+              console.error('Erro ao registrar o galpão:', error);
+            });
+        },
+        (error: any) => {
+          console.error('Erro ao obter informações de geocodificação:', error);
+        }
+      );
+    } else {
+      console.error('Latitude e longitude são obrigatórios.');
+    }
   }
 
   getAllWarehouses() {
@@ -64,11 +84,25 @@ export class HomeComponent {
             latitude: !isNaN(warehouse.latitude) ? warehouse.latitude : 0,
             longitude: !isNaN(warehouse.longitude) ? warehouse.longitude : 0,
           }));
+          this.filteredGalpoes = this.galpoes;
         },
         (error) => {
           console.error('Erro ao carregar os galpões:', error);
         }
       );
+  }
+
+  filterGalpoes(): void {
+    const query = this.searchQuery.trim().toLowerCase();
+    const sanitizedQuery = query.replace(/[\.\-]/g, '');
+    if (sanitizedQuery === '') {
+      this.filteredGalpoes = this.galpoes;
+    } else {
+      this.filteredGalpoes = this.galpoes.filter(galpao => {
+        const nameMatch = galpao.name ? galpao.name.toLowerCase().includes(sanitizedQuery) : false;
+        return nameMatch;
+      });
+    }
   }
 
 
