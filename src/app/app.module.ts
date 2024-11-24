@@ -20,6 +20,7 @@ import { HomeComponent } from './components/dashboard/home/home.component';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { ConteudoComponent } from './components/dashboard/conteudo/conteudo.component';
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     RecuperarSenhaComponent,
     HomeComponent,
     HeaderComponent,
+    ConteudoComponent,
   ],
   imports: [
     BrowserModule,

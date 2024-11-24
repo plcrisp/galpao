@@ -1,0 +1,155 @@
+<div class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50" id="createProductModal">
+  <div class="bg-white text-dark-blue rounded-lg shadow-lg w-full max-w-2xl">
+    <div class="px-4 py-3 border-b border-gray-200 flex justify-between items-center">
+
+      <h5 class="modal-title" id="createCategoryModalLabel">Registrar produto</h5>
+
+      <button class="text-red-600 text-xl" (click)="closeModal('createProductModal');">&times;</button>
+    </div>
+    <div class="p-4">
+      <form>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+          <div class="flex flex-col justify-center items-center mb-4">
+            <div class="img-placeholder">
+              <img src="../../../../assets/img/warehouse.png" alt="Galpão">
+            </div>
+          </div>
+
+          <!-- Título e Descrição -->
+          <div>
+            <!-- Nome -->
+            <div class="mb-4">
+              <label for="name" class="block text-sm font-medium">Nome</label>
+              <input
+                type="text"
+                id="name"
+                placeholder="Nome"
+                class="input-field"
+                name="name"
+                [(ngModel)]="product.name"
+                required
+              />
+            </div>
+
+            <div class="mb-4">
+              <label for="latitude" class="block text-sm font-medium">Tipo</label>
+              <input
+                type="number"
+                id="latitude"
+                placeholder="Latitude"
+                class="input-field"
+                name="latitude"
+                [(ngModel)]="product.type"
+                required
+              />
+            </div>
+
+            <div class="mb-4">
+              <label for="price" class="block text-sm font-medium">Preço</label>
+              <input
+                type="number"
+                id="price"
+                placeholder="Preço"
+                class="input-field"
+                name="price"
+                [(ngModel)]="product.price"
+                required
+              />
+            </div>
+
+            <div class="mb-4">
+              <label for="validade" class="block text-sm font-medium">Validade</label>
+              <input
+                type="number"
+                id="validade"
+                placeholder="Validade (dias)"
+                class="input-field"
+                name="validade"
+                [(ngModel)]="product.validade"
+                required
+              />
+            </div>
+
+            <div class="mb-4">
+              <label for="unidade" class="block text-sm font-medium">Unidade de medida</label>
+              <input
+                type="string"
+                id="unidade"
+                placeholder="Unidade de medida"
+                class="input-field"
+                name="unidade"
+                [(ngModel)]="product.unidade"
+                required
+              />
+            </div>
+
+
+
+          </div>
+        </div>
+
+        <!-- Botão -->
+        <div class="flex justify-end border-t border-gray-200 pt-3 space-x-2">
+          <button type="submit" class="btn-primary" [disabled]="validateForm()"
+          [ngClass]="{'btn-disabled': validateForm()}">Criar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<app-header></app-header>
+<div class="page">
+  <h1>Produtos Registrados</h1>
+  <div class="body">
+      <div class="card bg-white rounded-xl border border-dark-red">
+          <div class="itens-list rounded-xl">
+              <div class="itens-header">
+                  <div class="itens-title">
+                      <button class="flex items-center space-x-2 text-black focus:outline-none">
+                          <span>Nome</span>
+                          <img src="../../../../assets/icons/filter.svg" class="w-4 h-4" alt="Filtro">
+                      </button>
+                  </div>
+                  <div class="itens-title">
+                      <button class="flex items-center space-x-2 text-black focus:outline-none">
+                          <span>Tipo</span>
+                          <img src="../../../../assets/icons/filter.svg" class="w-4 h-4" alt="Filtro">
+                      </button>
+                  </div>
+                  <div class="itens-title">Última Atualização</div>
+                  <div class="itens-title">Autor</div>
+                  <div class="itens-title">Editado por</div>
+                  <div class="itens-title">Editar</div>
+                  <div class="itens-title">Excluir</div>
+              </div>
+
+              <div class="itens-row">
+                  <div class="itens-title">Orvalho</div>
+                  <div class="itens-title">C&A</div>
+                  <div class="itens-title">23/03/2024</div>
+                  <div class="itens-title">Pedro</div>
+                  <div class="itens-title">Pedro</div>
+                  <div class="itens-title">
+                      <button>
+                          <img src="../../../../assets/icons/edit-icon.svg" alt="Editar" />
+                      </button>
+                  </div>
+                  <div class="itens-title">
+                      <button >
+                          <img src="../../../../assets/icons/delete-icon.svg" alt="Excluir" />
+                      </button>
+                  </div>
+              </div>
+
+          </div>
+      </div>
+  </div>
+  <div class="flex justify-end mt-4 mb-10">
+    <button class="registrar text-white px-4 py-2 rounded" (click)="openModal('createProductModal')">
+      Registrar produto
+    </button>
+  </div>
+
+</div>

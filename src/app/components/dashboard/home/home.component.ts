@@ -69,6 +69,7 @@ export class HomeComponent {
     } else {
       console.error('Latitude e longitude são obrigatórios.');
     }
+    this.closeModal('createWarehouseModal');
   }
 
   getAllWarehouses() {
