@@ -1,0 +1,121 @@
+.page{
+  background-color: #D7F2BA;
+  min-height: 100vh;
+}
+
+.header{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 10px;
+  margin-top: 30px;
+}
+
+h1{
+  color: #262626;
+  font-weight: bold;
+  font-size: 32px;
+}
+
+.add-button {
+  background-color: #005410;
+  color: white;
+  font-weight: 600;
+  border-radius: 10px;
+  font-size: 18px;
+  width: 20%;
+  padding: 10px 10px;
+  outline: none;
+
+  &:hover{
+    opacity: 90%;
+  }
+}
+
+$dark-green: #005410;
+$white: #ffffff;
+$red: #D90000;
+$gray: #e5e5e5;
+$indigo-light: #cbd5e1;
+$green: #768948;
+$dark-gray: #262626;
+
+// Estilos principais
+#createWarehouseModal {
+  .bg-white {
+    background-color: $white;
+  }
+
+  .text-dark-blue {
+    color: $dark-gray;
+  }
+
+  .text-red-600 {
+    color: $red;
+  }
+
+  .modal-title{
+    font-size: 22px;
+  }
+
+  .text-indigo-300 {
+    color: $dark-gray;
+  }
+
+  .rounded-lg {
+    border-radius: 12px;
+  }
+
+  textarea{
+    height: 150px;
+  }
+
+  .input-field {
+    background-color: $white;
+    color: black;
+    border: 1px solid $green;
+    padding: 0.5rem;
+    width: 100%;
+    border-radius: 8px;
+    transition: border 0.2s ease-in-out;
+
+    &:focus {
+      border-color: $dark-green;
+      outline: none;
+    }
+  }
+
+  .btn-primary {
+    background-color: $dark-green;
+    color: $white;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: darken($dark-green, 10%);
+    }
+  }
+
+  .btn-disabled {
+    background-color: #d1d5db !important; /* Cinza claro */
+    color: #6b7280 !important; /* Cinza escuro */
+    cursor: not-allowed !important;
+  }
+
+
+  .inserir-imagem{
+    text-decoration: underline;
+  }
+
+  .img-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 200px;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+  }
+}

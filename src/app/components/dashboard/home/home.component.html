@@ -1,13 +1,124 @@
+<div class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50" id="createWarehouseModal">
+  <div class="bg-white text-dark-blue rounded-lg shadow-lg w-full max-w-2xl">
+    <div class="px-4 py-3 border-b border-gray-200 flex justify-between items-center">
+
+      <h5 class="modal-title" id="createCategoryModalLabel">Registrar galpão</h5>
+
+      <button class="text-red-600 text-xl" (click)="closeModal('createWarehouseModal');">&times;</button>
+    </div>
+    <div class="p-4">
+      <form (ngSubmit)="salvarGalpao()">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+          <div class="flex flex-col justify-center items-center mb-4">
+            <div class="img-placeholder">
+              <img src="../../../../assets/img/warehouse.png" alt="Galpão">
+            </div>
+          </div>
+
+          <!-- Título e Descrição -->
+          <div>
+            <!-- Nome -->
+            <div class="mb-4">
+              <label for="name" class="block text-sm font-medium">Nome</label>
+              <input
+                type="text"
+                id="name"
+                placeholder="Nome"
+                class="input-field"
+                name="name"
+                [(ngModel)]="galpao.name"
+                required
+              />
+            </div>
+
+            <div class="mb-4">
+              <label for="latitude" class="block text-sm font-medium">Latitude</label>
+              <input
+                type="number"
+                id="latitude"
+                placeholder="Latitude"
+                class="input-field"
+                name="latitude"
+                [(ngModel)]="galpao.latitude"
+                required
+              />
+            </div>
+
+            <div class="mb-4">
+              <label for="longitude" class="block text-sm font-medium">Longitude</label>
+              <input
+                type="number"
+                id="longitude"
+                placeholder="Longitude"
+                class="input-field"
+                name="longitude"
+                [(ngModel)]="galpao.longitude"
+                required
+              />
+            </div>
+
+            <div class="mb-4">
+              <label for="capacity" class="block text-sm font-medium">Capacidade</label>
+              <input
+                type="number"
+                id="capacity"
+                placeholder="Capacidade (m2)"
+                class="input-field"
+                name="capacity"
+                [(ngModel)]="galpao.capacity"
+                required
+              />
+            </div>
+
+
+
+          </div>
+        </div>
+
+        <!-- Botão -->
+        <div class="flex justify-end border-t border-gray-200 pt-3 space-x-2">
+          <button type="submit" class="btn-primary" [disabled]="validateForm()"
+          [ngClass]="{'btn-disabled': validateForm()}">Criar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <app-header></app-header>
 
-<google-map height="450px"
-            width="100%"
-            [center]="center"
-            [zoom]="zoom"
-            (mapClick)="moveMap($event)"
-            (mapMousemove)="move($event)">
-            <map-marker [position]="markerPosition" [title]="'Meu Marcador'"></map-marker>
-</google-map>
+<div class="page">
 
-<div>Latitude: {{display?.lat}}</div>
-<div>Longitude: {{display?.lng}}</div>
+  <google-map
+      height="450px"
+      width="100%"
+      [center]="center"
+      [zoom]="zoom">
+      <ng-container *ngFor="let galpao of galpoes">
+        <map-marker
+          *ngIf="galpao.latitude != null && galpao.longitude != null"
+          [position]="{ lat: galpao.latitude, lng: galpao.longitude }"
+          [title]="galpao.name">
+        </map-marker>
+      </ng-container>
+  </google-map>
+
+
+  <div class="header">
+
+    <h1>Galpões</h1>
+
+    <button type="button" class="add-button" (click)="openModal('createWarehouseModal')">Registrar Galpão</button>
+
+  </div>
+
+  <div *ngFor="let galpao of galpoes" class="card">
+    <h3>{{ galpao.name }}</h3>
+    <p>Latitude: {{ galpao.latitude }}</p>
+    <p>Longitude: {{ galpao.longitude }}</p>
+    <p>Capacidade: {{ galpao.capacity }} m2</p>
+    <p>Data de criação: {{ galpao.createDate | date: 'dd/MM/yyyy' }}</p>
+  </div>
+
+</div>
