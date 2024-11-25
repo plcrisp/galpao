@@ -56,6 +56,10 @@ export class HeaderComponent {
   navRastrearEntrega() {
     this.router.navigate(['/rastrear-entrega']);
   }
+
+  navLote() {
+    this.router.navigate(['/lote']);
+  }
   
 
   openLogoutModal() {
