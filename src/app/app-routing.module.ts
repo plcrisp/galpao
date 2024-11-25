@@ -13,7 +13,7 @@ const routes: Routes = [
   {path: 'cadastro', component: CadastroComponent},
   {path: 'recuperar-senha', component: RecuperarSenhaComponent},
   {path: 'home', component: HomeComponent},
-  {path: 'conteudo', component: ConteudoComponent}
+  {path: 'produtos', component: ConteudoComponent}
 
 ];
 

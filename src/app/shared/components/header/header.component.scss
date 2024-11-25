@@ -19,14 +19,6 @@ header {
           margin-right: 50px;
       }
 
-      .frase-rotativa {
-          font-size: 18px;
-          font-weight: 800;
-          margin-top: 5px;
-          opacity: 0; /* Começa invisível */
-          color: #262626;
-          animation: fade-in 0.4s ease-in-out forwards; /* Animação suave */
-      }
 
       @keyframes fade-in {
           0% {
@@ -47,7 +39,36 @@ header {
 .menu-direita {
   display: flex;
   align-items: center;
+  gap: 15px;
 }
+
+.menu-link {
+  text-decoration: none;
+  color: #262626;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  margin-right: 50px;
+}
+
+.menu-link:hover {
+  color: #005410; /* Ajuste para a cor de destaque desejada */
+}
+
+.dropdown {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.foto-perfil {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 
 .icon-lupa {
   cursor: pointer;
@@ -72,8 +93,8 @@ header {
 }
 
 .nome-usuario {
-  font-weight: 800;
-  font-size: 18px;
+  font-weight: 500;
+  font-size: 16px;
   color: #262626;
 }
 

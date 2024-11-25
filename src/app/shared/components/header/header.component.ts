@@ -34,16 +34,10 @@ export class HeaderComponent {
 
   ngOnInit(){
     this.user = this.auth.getLocalStorage();
-    this.exibirFraseAleatoria();
   }
 
   toggleDropdown() {
     this.dropdownAberto = !this.dropdownAberto;
-  }
-
-  exibirFraseAleatoria() {
-    const indice = Math.floor(Math.random() * this.frases.length);
-    this.fraseAtual = this.frases[indice];
   }
 
 
@@ -54,6 +48,15 @@ export class HeaderComponent {
   navPerfil() {
     this.router.navigate(['/perfil']);
   }
+
+  navProdutos() {
+    this.router.navigate(['/produtos']);
+  }
+  
+  navRastrearEntrega() {
+    this.router.navigate(['/rastrear-entrega']);
+  }
+  
 
   openLogoutModal() {
     this.showLogoutModal=true;

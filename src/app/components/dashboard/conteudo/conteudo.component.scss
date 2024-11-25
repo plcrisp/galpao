@@ -53,9 +53,18 @@ h1{
   max-height: 100px;
 }
 
-.itens-title:first-child,
-.itens-row:first-child {
+.itens-title:first-child {
   padding-left: 10px;
+}
+
+/* Cor de fundo para itens com índice par */
+.itens-row.even {
+  background-color: #F1F1F1; /* Cinza claro */
+}
+
+/* Cor de fundo para itens com índice ímpar */
+.itens-row.odd {
+  background-color: #E0E0E0; /* Cinza um pouco mais escuro */
 }
 
 button {

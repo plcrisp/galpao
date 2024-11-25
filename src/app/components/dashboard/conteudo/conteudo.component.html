@@ -7,12 +7,14 @@
       <button class="text-red-600 text-xl" (click)="closeModal('createProductModal');">&times;</button>
     </div>
     <div class="p-4">
-      <form>
+      <form (ngSubmit)="saveProduct()">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
           <div class="flex flex-col justify-center items-center mb-4">
             <div class="img-placeholder">
-              <img src="../../../../assets/img/warehouse.png" alt="Galpão">
+              <img *ngIf="product.type == ''" src="../../../../assets/icons/box.png" alt="Caixa">
+              <img *ngIf="product.type == 'Semente'" src="../../../../assets/icons/seed.png" alt="Caixa">
+              <img *ngIf="product.type == 'Muda'" src="../../../../assets/icons/sapling.png" alt="Caixa">
             </div>
           </div>
 
@@ -32,21 +34,35 @@
               />
             </div>
 
+            <!-- Tipo -->
             <div class="mb-4">
-              <label for="latitude" class="block text-sm font-medium">Tipo</label>
-              <input
-                type="number"
-                id="latitude"
-                placeholder="Latitude"
-                class="input-field"
-                name="latitude"
-                [(ngModel)]="product.type"
-                required
-              />
+              <label class="block text-sm font-medium mb-2">Tipo</label>
+              <div class="flex items-center space-x-4">
+                <label class="inline-flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    name="type"
+                    [checked]="product.type === 'Muda'"
+                    (change)="setType('Muda')"
+                    class="rounded border-gray-300 text-[#768948] focus:ring-[#768948]"
+                  />
+                  <span>Muda</span>
+                </label>
+                <label class="inline-flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    name="type"
+                    [checked]="product.type === 'Semente'"
+                    (change)="setType('Semente')"
+                    class="rounded border-gray-300 text-[#768948] focus:ring-[#768948]"
+                  />
+                  <span>Semente</span>
+                </label>
+              </div>
             </div>
 
             <div class="mb-4">
-              <label for="price" class="block text-sm font-medium">Preço</label>
+              <label for="price" class="block text-sm font-medium">Preço (R$)</label>
               <input
                 type="number"
                 id="price"
@@ -59,7 +75,7 @@
             </div>
 
             <div class="mb-4">
-              <label for="validade" class="block text-sm font-medium">Validade</label>
+              <label for="validade" class="block text-sm font-medium">Validade (dias)</label>
               <input
                 type="number"
                 id="validade"
@@ -74,7 +90,7 @@
             <div class="mb-4">
               <label for="unidade" class="block text-sm font-medium">Unidade de medida</label>
               <input
-                type="string"
+                type="text"
                 id="unidade"
                 placeholder="Unidade de medida"
                 class="input-field"
@@ -91,8 +107,8 @@
 
         <!-- Botão -->
         <div class="flex justify-end border-t border-gray-200 pt-3 space-x-2">
-          <button type="submit" class="btn-primary" [disabled]="validateForm()"
-          [ngClass]="{'btn-disabled': validateForm()}">Criar</button>
+          <button type="submit" class="btn-primary" 
+          >Criar</button>
         </div>
       </form>
     </div>
@@ -103,49 +119,54 @@
 <div class="page">
   <h1>Produtos Registrados</h1>
   <div class="body">
-      <div class="card bg-white rounded-xl border border-dark-red">
-          <div class="itens-list rounded-xl">
-              <div class="itens-header">
-                  <div class="itens-title">
-                      <button class="flex items-center space-x-2 text-black focus:outline-none">
-                          <span>Nome</span>
-                          <img src="../../../../assets/icons/filter.svg" class="w-4 h-4" alt="Filtro">
-                      </button>
-                  </div>
-                  <div class="itens-title">
-                      <button class="flex items-center space-x-2 text-black focus:outline-none">
-                          <span>Tipo</span>
-                          <img src="../../../../assets/icons/filter.svg" class="w-4 h-4" alt="Filtro">
-                      </button>
-                  </div>
-                  <div class="itens-title">Última Atualização</div>
-                  <div class="itens-title">Autor</div>
-                  <div class="itens-title">Editado por</div>
-                  <div class="itens-title">Editar</div>
-                  <div class="itens-title">Excluir</div>
-              </div>
-
-              <div class="itens-row">
-                  <div class="itens-title">Orvalho</div>
-                  <div class="itens-title">C&A</div>
-                  <div class="itens-title">23/03/2024</div>
-                  <div class="itens-title">Pedro</div>
-                  <div class="itens-title">Pedro</div>
-                  <div class="itens-title">
-                      <button>
-                          <img src="../../../../assets/icons/edit-icon.svg" alt="Editar" />
-                      </button>
-                  </div>
-                  <div class="itens-title">
-                      <button >
-                          <img src="../../../../assets/icons/delete-icon.svg" alt="Excluir" />
-                      </button>
-                  </div>
-              </div>
-
+    <div class="card bg-white rounded-xl border border-dark-red">
+      <div class="itens-list rounded-xl">
+        <div class="itens-header">
+          <!-- Títulos -->
+          <div class="itens-title">
+            <button class="flex items-center space-x-2 text-black focus:outline-none" (click)="ordenarPor('name')">
+              <span>Nome</span>
+              <img src="../../../../assets/icons/filter.svg" class="w-4 h-4" alt="Filtro">
+            </button>
           </div>
+          <div class="itens-title">
+            <button class="flex items-center space-x-2 text-black focus:outline-none" (click)="ordenarPor('type')">
+              <span>Tipo</span>
+              <img src="../../../../assets/icons/filter.svg" class="w-4 h-4" alt="Filtro">
+            </button>
+          </div>
+          <div class="itens-title">Preço (R$)</div>
+          <div class="itens-title">Validade (dias)</div>
+          <div class="itens-title">Unidade de medida</div>
+          <div class="itens-title">Editar</div>
+          <div class="itens-title">Excluir</div>
+        </div>
+  
+        <!-- Listagem de produtos -->
+        <div *ngIf="products | async as products">
+          <div *ngFor="let product of products; let i = index" class="itens-row" [ngClass]="{'even': i % 2 === 0, 'odd': i % 2 !== 0}">
+            <div class="itens-title">{{ product.name }}</div>
+            <div class="itens-title">{{ product.type }}</div>
+            <div class="itens-title">{{ product.price }}</div>
+            <div class="itens-title">{{ product.validade }}</div>
+            <div class="itens-title">{{ product.unidade }}</div>
+            <div class="itens-title">
+              <button>
+                <img src="../../../../assets/icons/edit-icon.svg" alt="Editar" />
+              </button>
+            </div>
+            <div class="itens-title">
+              <button>
+                <img src="../../../../assets/icons/delete-icon.svg" alt="Excluir" />
+              </button>
+            </div>
+          </div>
+        </div>
+  
       </div>
+    </div>
   </div>
+  
   <div class="flex justify-end mt-4 mb-10">
     <button class="registrar text-white px-4 py-2 rounded" (click)="openModal('createProductModal')">
       Registrar produto

@@ -26,6 +26,11 @@ html, body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+
+  img{
+    height: 100px;
+    margin-left: 10px;
+  }
 }
 
 .text {
@@ -38,7 +43,7 @@ html, body {
 .button {
   background-color: white;
   padding: 5px 40px;
-  margin-top: 20px;
+  margin-top: 70px;
   border-radius: 20px;
   color: #768948;
   font-size: 20px;
